@@ -1,0 +1,59 @@
+<%- include("../layouts/main", { body: `
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card app-card shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+              <h4 class="mb-0">Aidat Odeme (Havale / EFT)</h4>
+              <div class="text-muted small">Odemenizi yaptiktan sonra bu form ile bildirirsiniz. Admin onayindan sonra bakiyenize yansir.</div>
+            </div>
+            <a class="btn btn-outline-primary btn-sm" href="/"><i class="bi bi-arrow-left me-1"></i>Ana Sayfa</a>
+          </div>
+
+          ${errors ? `<div class="alert alert-danger mt-3 mb-0">${errors}</div>` : ``}
+
+          <hr class="my-3"/>
+
+          <div class="row g-3">
+            <div class="col-md-7">
+              <div class="border rounded-3 p-3 bg-white">
+                <div class="fw-semibold mb-2"><i class="bi bi-bank me-1"></i>Banka Bilgileri</div>
+                <div class="small">
+                  <div><b>Banka:</b> ${s?.iban_bank || `<span class="text-muted">Admin panelinden girilecek</span>`}</div>
+                  <div><b>Hesap Sahibi:</b> ${s?.iban_name || `<span class="text-muted">Admin panelinden girilecek</span>`}</div>
+                  <div><b>IBAN:</b> ${s?.iban || `<span class="text-muted">Admin panelinden girilecek</span>`}</div>
+                </div>
+                <div class="text-muted small mt-2">
+                  Aciklama onerisi: <code>YKDD Aidat - UyeNo/AdSoyad - Ay/Yil</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <form method="post" action="/pay" enctype="multipart/form-data" class="border rounded-3 p-3 bg-white">
+                <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                <label class="form-label">Uye No</label>
+                <input class="form-control" name="member_id" type="number" min="1" required placeholder="Orn: 12">
+
+                <label class="form-label mt-2">Tutar (TL)</label>
+                <input class="form-control" name="amount" required placeholder="Orn: 250">
+
+                <label class="form-label mt-2">Not (opsiyonel)</label>
+                <input class="form-control" name="note" placeholder="Orn: Subat aidati">
+
+                <label class="form-label mt-2">Dekont (opsiyonel)</label>
+                <input class="form-control" name="receipt" type="file" accept="image/*,.pdf">
+
+                <button class="btn btn-primary w-100 mt-3" type="submit">
+                  <i class="bi bi-send me-1"></i>Odeme Bildir
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>

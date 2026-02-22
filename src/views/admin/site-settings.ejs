@@ -1,0 +1,129 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h4 class="mb-0">Site Ayarlari</h4>
+      <div class="text-muted small">Ana sayfa ve iletisim bilgilerini buradan yonet. Yonetim kurulu kayitlari icin <a href="/admin/board">Yonetim Kurulu</a> ekranini kullan.</div>
+    </div>
+    <a class="btn btn-outline-primary" href="/" target="_blank"><i class="bi bi-box-arrow-up-right me-1"></i>Siteyi Gor</a>
+  </div>
+
+  <form method="post" action="/admin/site-settings" class="card app-card shadow-sm">
+    <input type="hidden" name="_csrf" value="${csrfToken}"/>
+    <div class="card-body">
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Dernek Adi</label>
+          <input class="form-control" name="app_name" value="${(s?.app_name||'')}" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Kisa Ad</label>
+          <input class="form-control" name="app_short" value="${(s?.app_short||'')}" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Tema Rengi</label>
+          <input type="color" class="form-control form-control-color w-100" name="primary_color" value="${(s?.primary_color||'#2F5BEA')}">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Hakkimizda</label>
+          <textarea class="form-control" name="about_text" rows="4" required>${(s?.about_text||'')}</textarea>
+        </div>
+
+        <div class="col-12"><hr class="my-2"/></div>
+
+        <div class="col-12">
+          <div class="fw-semibold mb-2"><i class="bi bi-person-badge me-1"></i>Yonetim Kurulu (5 kisi)</div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Baskan</label>
+          <input class="form-control" name="board_baskan" value="${(s?.board?.[0]?.name||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Baskan Yardimcisi</label>
+          <input class="form-control" name="board_baskan_yardimcisi" value="${(s?.board?.[1]?.name||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Genel Sekreter</label>
+          <input class="form-control" name="board_genel_sekreter" value="${(s?.board?.[2]?.name||'')}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Sayman</label>
+          <input class="form-control" name="board_sayman" value="${(s?.board?.[3]?.name||'')}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Uye</label>
+          <input class="form-control" name="board_uye" value="${(s?.board?.[4]?.name||'')}">
+        </div>
+
+        <div class="col-12"><hr class="my-2"/></div>
+
+        <div class="col-12">
+          <div class="fw-semibold mb-2"><i class="bi bi-geo-alt me-1"></i>Iletisim</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Adres</label>
+          <input class="form-control" name="contact_address" value="${(s?.contact?.address||'')}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Telefon</label>
+          <input class="form-control" name="contact_phone" value="${(s?.contact?.phone||'')}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">E-posta</label>
+          <input class="form-control" name="contact_email" value="${(s?.contact?.email||'')}">
+        </div>
+
+        <div class="col-12"><hr class="my-2"/></div>
+
+        <div class="col-12">
+          <div class="fw-semibold mb-2"><i class="bi bi-share me-1"></i>Sosyal</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Instagram URL</label>
+          <input class="form-control" name="social_instagram" value="${(s?.social?.instagram||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Facebook URL</label>
+          <input class="form-control" name="social_facebook" value="${(s?.social?.facebook||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">YouTube URL</label>
+          <input class="form-control" name="social_youtube" value="${(s?.social?.youtube||'')}">
+        </div>
+
+        <div class="col-12"><hr class="my-2"/></div>
+
+        <div class="col-12">
+          <div class="fw-semibold mb-2"><i class="bi bi-map me-1"></i>Harita (embed URL)</div>
+          <input class="form-control" name="map_embed_url" value="${(s?.map_embed_url||'')}">
+          <div class="text-muted small mt-1">OpenStreetMap embed linki veya Google Maps embed linki yapistirabilirsin.</div>
+        </div>
+
+        <div class="col-12"><hr class="my-2"/></div>
+
+        <div class="col-12">
+          <div class="fw-semibold mb-2"><i class="bi bi-bank me-1"></i>Aidat Odeme (Havale/EFT)</div>
+          <div class="text-muted small">Uye /pay sayfasinda bu bilgiler gosterilir.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Banka</label>
+          <input class="form-control" name="iban_bank" value="${(s?.iban_bank||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Hesap Sahibi</label>
+          <input class="form-control" name="iban_name" value="${(s?.iban_name||'')}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">IBAN</label>
+          <input class="form-control" name="iban" value="${(s?.iban||'')}">
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end gap-2">
+      <button class="btn btn-primary" type="submit"><i class="bi bi-check2 me-1"></i>Kaydet</button>
+    </div>
+  </form>
+` }) %>

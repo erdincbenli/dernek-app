@@ -1,0 +1,78 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h4 class="mb-1">${mode === "admin" ? "Finans" : "Hesabim"}</h4>
+      <div class="text-muted">${mode === "admin" ? "Uyelerin borc/odeme ve makbuz islemleri" : "Bakiye durumun"}</div>
+    </div>
+    ${mode === "admin" ? `<a class="btn btn-outline-primary btn-sm" href="/admin/members"><i class="bi bi-people me-1"></i>Uyeler</a>` : ``}
+  </div>
+
+  <div class="card app-card shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Uye</th>
+              <th style="width:160px">Bakiye</th>
+              <th style="width:120px">Durum</th>
+              ${mode==="admin" ? `<th class="text-end" style="width:520px">Islemler</th>` : ``}
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => {
+              const member = r.member || r;
+              const bal = r.balance_cents || 0;
+              const label = bal>0 ? "Borclu" : (bal<0 ? "Alacakli" : "Sifir");
+              const badge = bal>0 ? "text-bg-warning" : (bal<0 ? "text-bg-info" : "text-bg-success");
+              return `
+                <tr>
+                  <td>
+                    <div class="fw-semibold">${member.full_name}</div>
+                    <div class="small text-muted">${member.phone || ""} ${member.phone && member.email ? "•" : ""} ${member.email || ""}</div>
+                  </td>
+                  <td class="fw-semibold">${(bal/100).toFixed(2)} TL</td>
+                  <td><span class="badge ${badge}">${label}</span></td>
+
+                  ${mode==="admin" ? `
+                    <td class="text-end">
+                      <div class="d-flex flex-wrap justify-content-end gap-2">
+                        <form method="post" action="/admin/finance/${member.id}/debt" class="d-flex gap-2">
+                          <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                          <div class="input-group input-group-sm" style="width:190px">
+                            <span class="input-group-text"><i class="bi bi-plus-circle"></i></span>
+                            <input class="form-control" name="amount" placeholder="Borc (TL)" />
+                          </div>
+                          <button class="btn btn-outline-primary btn-sm">Ekle</button>
+                        </form>
+
+                        <form method="post" action="/admin/finance/${member.id}/payment" class="d-flex gap-2">
+                          <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                          <div class="input-group input-group-sm" style="width:190px">
+                            <span class="input-group-text"><i class="bi bi-dash-circle"></i></span>
+                            <input class="form-control" name="amount" placeholder="Odeme (TL)" />
+                          </div>
+                          <button class="btn btn-outline-success btn-sm">Ekle</button>
+                        </form>
+
+                        <form method="post" action="/admin/receipts/${member.id}/create" class="d-flex gap-2">
+                          <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                          <div class="input-group input-group-sm" style="width:190px">
+                            <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                            <input class="form-control" name="amount" placeholder="Makbuz (TL)" />
+                          </div>
+                          <input class="form-control form-control-sm" name="description" placeholder="Aciklama" style="width:220px"/>
+                          <button class="btn btn-outline-dark btn-sm">Olustur</button>
+                        </form>
+                      </div>
+                    </td>
+                  ` : ``}
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+` }) %>

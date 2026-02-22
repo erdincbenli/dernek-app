@@ -1,0 +1,115 @@
+<%- include("../layouts/main", { body: `
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card app-card shadow-sm app-hero">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="app-hero-icon"><i class="bi bi-people-fill"></i></div>
+            <div>
+              <h3 class="mb-1">${appName}</h3>
+              <div class="text-muted">Dayanisma, kultur ve birliktelik icin tek bir dijital merkez.</div>
+              <div class="badge rounded-pill text-bg-light app-brand-badge mt-2">${(s && s.home_badge_text) ? s.home_badge_text : "YKDD • Yesilce"}</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a class="btn btn-primary" href="/pay"><i class="bi bi-credit-card me-1"></i>Aidat Ode</a>
+            <a class="btn btn-outline-primary" href="/announcements"><i class="bi bi-megaphone me-1"></i>Duyurular</a>
+            <a class="btn btn-outline-primary" href="/news"><i class="bi bi-newspaper me-1"></i>Haberler</a>
+            <a class="btn btn-outline-primary" href="/gallery"><i class="bi bi-images me-1"></i>Galeri</a>
+            <a class="btn btn-outline-primary" href="/forum"><i class="bi bi-chat-left-text me-1"></i>Forum</a>
+          </div>
+
+          <div class="small text-muted mt-3">
+            Not: Bu metinler ve iletisim bilgileri admin panelinden yonetilebilir.
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <div class="card app-card shadow-sm h-100">
+            <div class="card-body">
+              <div class="fw-semibold mb-1"><i class="bi bi-info-circle me-1"></i>Hakkimizda</div>
+              <div class="text-muted small">
+                ${(s && s.about_text) ? s.about_text : ""}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card app-card shadow-sm h-100">
+            <div class="card-body">
+              <div class="fw-semibold mb-1"><i class="bi bi-calendar-event me-1"></i>Etkinlikler</div>
+              <div class="text-muted small">
+                Yakinda: toplantilar, kermesler, gezi organizasyonlari, yardim kampanyalari.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card app-card shadow-sm mt-3">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><i class="bi bi-person-badge me-1"></i>Yonetim Kurulu</div>
+          <div class="row g-2">
+            ${(!board || board.length===0) ? `
+              <div class="text-muted small">Henuz kayit yok.</div>
+            ` : board.map(b => `
+              <div class="col-md-4">
+                <div class="border rounded-3 p-3 bg-white h-100">
+                  <div class="fw-semibold">${b.title}</div>
+                  <div class="text-muted small">${b.full_name}</div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card app-card shadow-sm">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><i class="bi bi-link-45deg me-1"></i>Hizli Linkler</div>
+          <div class="d-grid gap-2">
+            <a class="btn btn-ghost text-start" href="/news"><i class="bi bi-newspaper me-2"></i>Haberler</a>
+            <a class="btn btn-ghost text-start" href="/announcements"><i class="bi bi-megaphone me-2"></i>Duyurular</a>
+            <a class="btn btn-ghost text-start" href="/classifieds"><i class="bi bi-postcard me-2"></i>Ilanlar</a>
+            <a class="btn btn-ghost text-start" href="/gallery"><i class="bi bi-images me-2"></i>Galeri</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card app-card shadow-sm mt-3">
+        <div class="card-body">
+          <div class="fw-semibold mb-1"><i class="bi bi-geo-alt me-1"></i>Iletisim</div>
+          <div class="text-muted small">
+            Adres: ${(s && s.contact && s.contact.address) ? s.contact.address : ""} <br/>
+            Telefon: ${(s && s.contact && s.contact.phone) ? s.contact.phone : ""} <br/>
+            E-posta: ${(s && s.contact && s.contact.email) ? s.contact.email : ""}
+          </div>
+          <hr/>
+          <div class="fw-semibold mb-2"><i class="bi bi-share me-1"></i>Sosyal</div>
+          <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary btn-sm" href="${(s && s.social && s.social.instagram) ? s.social.instagram : '#'}" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a class="btn btn-outline-primary btn-sm" href="${(s && s.social && s.social.facebook) ? s.social.facebook : '#'}" target="_blank"><i class="bi bi-facebook"></i></a>
+            <a class="btn btn-outline-primary btn-sm" href="${(s && s.social && s.social.youtube) ? s.social.youtube : '#'}" target="_blank"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card app-card shadow-sm mt-3">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><i class="bi bi-map me-1"></i>Harita</div>
+          <div class="ratio ratio-16x9 rounded-3 overflow-hidden border">
+            <iframe
+              src="${(s && s.map_embed_url) ? s.map_embed_url : ''}"
+              style="border:0" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>

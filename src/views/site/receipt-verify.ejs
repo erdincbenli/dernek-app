@@ -1,0 +1,62 @@
+<%- include("../layouts/main", { body: `
+  <div class="container" style="max-width:900px">
+    <div class="card app-card shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <div class="text-muted small mb-1">${orgName}</div>
+            <h4 class="mb-1">Makbuz Dogrulama</h4>
+            <div class="text-muted small">Bu sayfa QR ile acilan makbuz dogrulama ekranidir.</div>
+          </div>
+          <a class="btn btn-outline-primary" href="/"><i class="bi bi-house me-1"></i>Dernek Sitesi</a>
+        </div>
+
+        <hr/>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 bg-white">
+              <div class="text-muted small">Makbuz No</div>
+              <div class="fw-semibold">${receipt.receipt_no}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 bg-white">
+              <div class="text-muted small">Tarih</div>
+              <div class="fw-semibold">${receipt.dateText}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 bg-white">
+              <div class="text-muted small">Uye</div>
+              <div class="fw-semibold">${receipt.member_name}</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 bg-white">
+              <div class="text-muted small">Tutar</div>
+              <div class="fw-semibold">${receipt.amountText}</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 bg-white">
+              <div class="text-muted small">Aciklama</div>
+              <div class="fw-semibold">${receipt.description}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-3 mb-0">
+          <i class="bi bi-shield-check me-1"></i>Bu makbuz sistemde kayitlidir.
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a class="btn btn-primary" href="/login"><i class="bi bi-box-arrow-in-right me-1"></i>Giris Yap</a>
+          <a class="btn btn-outline-secondary" href="/receipts/${receipt.id}"><i class="bi bi-receipt me-1"></i>Makbuzu Gor (Giris Gerektirir)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>

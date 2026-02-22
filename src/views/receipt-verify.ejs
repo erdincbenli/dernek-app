@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Makbuz Dogrulama</title>
+    <style>
+      :root{
+        --brand:#1d4ed8; /* mavi */
+        --ok:#16a34a;
+        --text:#0f172a;
+        --muted:#64748b;
+        --card:#ffffff;
+        --bg:#f1f5f9;
+        --border:#e2e8f0;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text)}
+      .wrap{max-width:860px;margin:0 auto;padding:18px}
+      .top{
+        background:linear-gradient(135deg, rgba(29,78,216,.10), rgba(29,78,216,.04));
+        border:1px solid var(--border);
+        border-radius:16px;
+        padding:16px;
+        display:flex;
+        gap:14px;
+        align-items:center;
+        justify-content:space-between;
+      }
+      .brand{display:flex;gap:12px;align-items:center}
+      .logo{
+        width:44px;height:44px;border-radius:12px;
+        background:rgba(29,78,216,.12);
+        display:flex;align-items:center;justify-content:center;
+        font-weight:800;color:var(--brand);
+      }
+      .brand h1{margin:0;font-size:16px;line-height:1.2}
+      .brand p{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
+      .badge{
+        display:inline-flex;align-items:center;gap:8px;
+        padding:10px 12px;border-radius:999px;
+        background:rgba(22,163,74,.12);
+        color:var(--ok);
+        border:1px solid rgba(22,163,74,.25);
+        font-weight:700;font-size:13px;
+        white-space:nowrap;
+      }
+      .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+      .card{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:16px;
+        padding:14px;
+        box-shadow:0 6px 20px rgba(15,23,42,.06);
+      }
+      .card h2{margin:0 0 10px 0;font-size:14px}
+      .kv{display:grid;grid-template-columns:160px 1fr;gap:8px 12px}
+      .k{color:var(--muted);font-size:12px}
+      .v{font-size:13px;font-weight:600}
+      .hr{height:1px;background:var(--border);margin:12px 0}
+      .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+      .btn{
+        display:inline-flex;align-items:center;justify-content:center;
+        padding:10px 12px;border-radius:12px;
+        border:1px solid var(--border);
+        background:#fff;
+        color:var(--text);
+        font-weight:700;font-size:13px;
+        text-decoration:none;
+      }
+      .btn.primary{
+        border-color:rgba(29,78,216,.35);
+        color:var(--brand);
+        background:rgba(29,78,216,.06);
+      }
+      .note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+      .small{font-size:11px;color:var(--muted)}
+      @media (min-width: 820px){
+        .grid{grid-template-columns:1.3fr .7fr}
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">
+          <div class="logo">YK</div>
+          <div>
+            <h1><%= orgName %></h1>
+            <p>Makbuz dogrulama ekrani</p>
+          </div>
+        </div>
+        <div class="badge">✓ Kayit dogrulandi</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Makbuz Bilgileri</h2>
+          <div class="kv">
+            <div class="k">Makbuz No</div><div class="v">#<%= receipt.id %></div>
+            <div class="k">Tarih</div><div class="v"><%= receipt.dateText %></div>
+            <div class="k">Uye</div><div class="v"><%= receipt.memberName || ("Uye #" + receipt.memberId) %></div>
+            <div class="k">Tutar</div><div class="v"><%= receipt.amountText %></div>
+            <div class="k">Aciklama</div><div class="v"><%= receipt.note || "-" %></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="actions">
+            <a class="btn primary" href="<%= homeUrl %>">Ana sayfa</a>
+            <a class="btn" href="<%= verifyUrl %>">Bu linki kopyala</a>
+          </div>
+
+          <div class="note">
+            Bu ekran sadece dogrulama amaciyla gosterilir. Tam makbuz cikti/icerik
+            yonetici panelinde goruntulenebilir.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Dogrulama</h2>
+          <div class="small">Bu makbuz sistemde kayitli ve QR ile dogrulanmistir.</div>
+          <div class="hr"></div>
+          <div class="kv">
+            <div class="k">Dogrulama URL</div>
+            <div class="v" style="word-break:break-all"><%= verifyUrl %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

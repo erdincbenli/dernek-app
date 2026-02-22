@@ -1,0 +1,115 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h4 class="mb-1">Yonetim Kurulu</h4>
+      <div class="text-muted small">Unvan, isim, sira ve aktiflik durumunu buradan yonet.</div>
+    </div>
+    <a class="btn btn-outline-primary" href="/" target="_blank"><i class="bi bi-box-arrow-up-right me-1"></i>Siteyi Gor</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <form method="post" action="/admin/board" class="card app-card shadow-sm">
+        <div class="card-header bg-white"><div class="fw-semibold">Yeni Kisi Ekle</div></div>
+        <div class="card-body">
+          <div class="mb-2">
+            <label class="form-label">Unvan</label>
+            <input name="title" class="form-control" placeholder="Orn: Sayman" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Ad Soyad</label>
+            <input name="full_name" class="form-control" placeholder="Orn: Ahmet Yilmaz" required>
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label">Sira</label>
+              <input name="order_index" type="number" class="form-control" value="1" min="0">
+            </div>
+            <div class="col-6">
+              <label class="form-label">Durum</label>
+              <select name="is_active" class="form-select">
+                <option value="1" selected>Aktif</option>
+                <option value="0">Pasif</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-end">
+          <button class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Ekle</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card app-card shadow-sm">
+        <div class="card-header bg-white d-flex align-items-center justify-content-between">
+          <div class="fw-semibold">Liste</div>
+          <div class="text-muted small">${rows.length} kayit</div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th style="width:70px">Sira</th>
+                  <th>Unvan</th>
+                  <th>Ad Soyad</th>
+                  <th style="width:90px">Durum</th>
+                  <th style="width:190px">Islem</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.length === 0 ? `
+                  <tr><td colspan="5" class="text-center text-muted py-4">Henuz kayit yok.</td></tr>
+                ` : rows.map(r => `
+                  <tr>
+                    <td class="text-muted">${r.order_index}</td>
+                    <td><span class="badge text-bg-light">${r.title}</span></td>
+                    <td class="fw-semibold">${r.full_name}</td>
+                    <td>${r.is_active ? `<span class="badge text-bg-success">Aktif</span>` : `<span class="badge text-bg-secondary">Pasif</span>`}</td>
+                    <td>
+                      <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-sm btn-outline-primary" type="button"
+                          data-bs-toggle="collapse" data-bs-target="#edit-${r.id}">
+                          Duzenle
+                        </button>
+                        <form method="post" action="/admin/board/${r.id}/delete" onsubmit="return confirm('Silinsin mi?')">
+                          <button class="btn btn-sm btn-outline-danger">Sil</button>
+                        </form>
+                      </div>
+                      <div class="collapse mt-2" id="edit-${r.id}">
+                        <form method="post" action="/admin/board/${r.id}" class="border rounded-3 p-3 bg-white">
+                          <div class="row g-2">
+                            <div class="col-md-4">
+                              <label class="form-label small">Unvan</label>
+                              <input name="title" class="form-control form-control-sm" value="${r.title}" required>
+                            </div>
+                            <div class="col-md-5">
+                              <label class="form-label small">Ad Soyad</label>
+                              <input name="full_name" class="form-control form-control-sm" value="${r.full_name}" required>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="form-label small">Sira</label>
+                              <input name="order_index" type="number" class="form-control form-control-sm" value="${r.order_index}" min="0">
+                            </div>
+                            <div class="col-md-1">
+                              <label class="form-label small">Aktif</label>
+                              <input class="form-check-input mt-2" type="checkbox" name="is_active" ${r.is_active ? "checked" : ""}>
+                            </div>
+                          </div>
+                          <div class="d-flex justify-content-end mt-2">
+                            <button class="btn btn-sm btn-primary">Kaydet</button>
+                          </div>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>

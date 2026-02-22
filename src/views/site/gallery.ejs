@@ -1,0 +1,37 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h4 class="mb-1"><i class="bi bi-images me-1"></i>Galeri</h4>
+      <div class="text-muted">Fotograflar ve anilar</div>
+    </div>
+    <a class="btn btn-ghost btn-sm" href="/"><i class="bi bi-house me-1"></i>Anasayfa</a>
+  </div>
+
+  <div class="row g-3">
+    ${(items||[]).map(g => `
+      <div class="col-sm-6 col-lg-4">
+        <div class="card app-card shadow-sm h-100">
+          <div class="app-gallery-thumb" style="background-image:url('${g.image_url}')"></div>
+          <div class="card-body">
+            <div class="fw-semibold">${g.title}</div>
+            <div class="text-muted small">${g.created_at}</div>
+          </div>
+        </div>
+      </div>
+    `).join("") || `<div class="text-muted">Henuz kayit yok.</div>`}
+  </div>
+
+  ${user && user.role==="admin" ? `
+  <div class="card app-card shadow-sm mt-4">
+    <div class="card-body">
+      <div class="fw-semibold mb-2">Admin: Yeni Gorsel</div>
+      <form method="post" action="/admin/gallery">
+        <input type="hidden" name="_csrf" value="${csrfToken}"/>
+        <input class="form-control mb-2" name="title" placeholder="Baslik" required/>
+        <input class="form-control mb-2" name="image_url" placeholder="Gorsel URL (https://...)" required/>
+        <button class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Ekle</button>
+      </form>
+      <div class="small text-muted mt-2">Not: Simdilik URL ile calisiyor. Sonra dosya yukleme ekleyecegiz.</div>
+    </div>
+  </div>` : ""}
+` }) %>

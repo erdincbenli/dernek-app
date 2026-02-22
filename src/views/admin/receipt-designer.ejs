@@ -1,0 +1,52 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h4 class="mb-1">Makbuz Tasarimi</h4>
+      <div class="text-muted">Sürükle-bırak ile tasarla. Degiskenler: <code>{{receipt_no}}</code> <code>{{issued_at}}</code> <code>{{member_name}}</code> <code>{{amount}}</code> <code>{{description}}</code> <code>{{qr}}</code> <code>{{qr_url}}</code> (A5 preset)</div>
+    </div>
+    <a class="btn btn-outline-secondary btn-sm" href="/admin"><i class="bi bi-arrow-left me-1"></i>Dashboard</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card app-card shadow-sm">
+        <div class="card-body p-0">
+          <div id="gjs" style="height:72vh;border-top:1px solid #eee"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card app-card shadow-sm mb-3">
+        <div class="card-body">
+          <form method="post" action="/admin/receipt-template/save" id="tplForm">
+            <input type="hidden" name="_csrf" value="${csrfToken}"/>
+            <input type="hidden" name="html" id="tplHtml"/>
+            <input type="hidden" name="css" id="tplCss"/>
+            <button class="btn btn-primary w-100" type="submit">
+              <i class="bi bi-save me-1"></i>Kaydet
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card app-card shadow-sm">
+        <div class="card-body small">
+          <div class="fw-semibold mb-2">Ipuclari</div>
+          <ul class="mb-0">
+            <li>Logo için üst tarafa bir <b>Image</b> ekleyip URL ver.</li>
+            <li>Metin ve kutulari hizalamak icin <b>Row/Column</b> kullan.</li>
+            <li>Kaydet dediginde son tasarim DB'ye yazilir.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/grapesjs"></script>
+  <script>
+    window.__TPL_HTML__ = ${JSON.stringify(tpl.html || "")};
+    window.__TPL_CSS__  = ${JSON.stringify(tpl.css || "")};
+  </script>
+  <script src="/public/js/receipt-designer.js"></script>
+` }) %>

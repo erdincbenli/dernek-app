@@ -1,0 +1,45 @@
+<%- include("../layouts/main", { body: `
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6">
+      <div class="card app-card shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="app-logo"><i class="bi bi-shield-lock"></i></span>
+            <div>
+              <div class="fw-semibold">Giris</div>
+              <div class="small text-muted">Admin veya uye hesabiyla devam et</div>
+            </div>
+          </div>
+
+          <form method="post" action="/login">
+            <input type="hidden" name="_csrf" value="${csrfToken}"/>
+
+            <div class="mb-2">
+              <label class="form-label">Kullanici adi</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input class="form-control" name="username" autocomplete="username" required/>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Sifre</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input class="form-control" name="password" type="password" autocomplete="current-password" required/>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Giris yap
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center small text-muted mt-3">
+        Sorun mu yasiyorsun? Admin sifresini degistirmek icin seed'i guncelleyebiliriz.
+      </div>
+    </div>
+  </div>
+` }) %>

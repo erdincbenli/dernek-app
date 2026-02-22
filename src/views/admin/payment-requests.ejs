@@ -1,0 +1,92 @@
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h4 class="mb-0">Odeme Bildirimleri</h4>
+      <div class="text-muted small">Uye havale/EFT bildirimlerini buradan onayla.</div>
+    </div>
+    <a class="btn btn-outline-primary" href="/pay" target="_blank"><i class="bi bi-box-arrow-up-right me-1"></i>/pay Sayfasi</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="card app-card shadow-sm">
+        <div class="card-header bg-white fw-semibold">Bekleyenler (${pending.length})</div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead><tr>
+              <th>ID</th><th>Uye</th><th>Tutar</th><th>Not</th><th>Dekont</th><th>Tarih</th><th class="text-end">Islem</th>
+            </tr></thead>
+            <tbody>
+              ${pending.map(p => `
+                <tr>
+                  <td>${p.id}</td>
+                  <td>${p.full_name} <span class="text-muted small">(#${p.member_id})</span></td>
+                  <td>${(p.amount_cents/100).toFixed(2)} TL</td>
+                  <td class="text-muted">${p.note || ""}</td>
+                  <td>${p.receipt_path ? `<a href="${p.receipt_path}" target="_blank">Ac</a>` : `<span class="text-muted">-</span>`}</td>
+                  <td class="text-muted small">${p.created_at}</td>
+                  <td class="text-end">
+                    <form method="post" action="/admin/payments/${p.id}/approve" style="display:inline;">
+                      <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                      <button class="btn btn-sm btn-success">Onayla</button>
+                    </form>
+                    <form method="post" action="/admin/payments/${p.id}/reject" style="display:inline;">
+                      <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                      <button class="btn btn-sm btn-outline-danger">Reddet</button>
+                    </form>
+                  </td>
+                </tr>
+              `).join("")}
+              ${pending.length === 0 ? `<tr><td colspan="7" class="text-muted p-3">Bekleyen odeme yok.</td></tr>` : ""}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card app-card shadow-sm">
+        <div class="card-header bg-white fw-semibold">Onaylananlar (${approved.length})</div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead><tr><th>ID</th><th>Uye</th><th>Tutar</th><th>Makbuz</th><th>Tarih</th></tr></thead>
+            <tbody>
+              ${approved.map(p => `
+                <tr>
+                  <td>${p.id}</td>
+                  <td>${p.full_name} <span class="text-muted small">(#${p.member_id})</span></td>
+                  <td>${(p.amount_cents/100).toFixed(2)} TL</td>
+                  <td>${p.ref_receipt_id ? `<a href="/receipts/${p.ref_receipt_id}" target="_blank">Goruntule</a>` : "-"}</td>
+                  <td class="text-muted small">${p.processed_at || ""}</td>
+                </tr>
+              `).join("")}
+              ${approved.length === 0 ? `<tr><td colspan="5" class="text-muted p-3">Kayit yok.</td></tr>` : ""}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card app-card shadow-sm">
+        <div class="card-header bg-white fw-semibold">Reddedilenler (${rejected.length})</div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead><tr><th>ID</th><th>Uye</th><th>Tutar</th><th>Tarih</th></tr></thead>
+            <tbody>
+              ${rejected.map(p => `
+                <tr>
+                  <td>${p.id}</td>
+                  <td>${p.full_name} <span class="text-muted small">(#${p.member_id})</span></td>
+                  <td>${(p.amount_cents/100).toFixed(2)} TL</td>
+                  <td class="text-muted small">${p.processed_at || ""}</td>
+                </tr>
+              `).join("")}
+              ${rejected.length === 0 ? `<tr><td colspan="4" class="text-muted p-3">Kayit yok.</td></tr>` : ""}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>

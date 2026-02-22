@@ -1,0 +1,64 @@
+<% const isEdit = !!member; %>
+<%- include("../layouts/main", { body: `
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h4 class="mb-1">${isEdit ? "Uye Duzenle" : "Yeni Uye"}</h4>
+      <div class="text-muted">${isEdit ? "Uye bilgilerini guncelle" : "Yeni uye kaydi olustur"}</div>
+    </div>
+    <a class="btn btn-outline-secondary btn-sm" href="/admin/members"><i class="bi bi-arrow-left me-1"></i>Geri</a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card app-card shadow-sm">
+        <div class="card-body">
+          <form method="post" action="${isEdit ? `/admin/members/${member.id}` : "/admin/members"}">
+            <input type="hidden" name="_csrf" value="${csrfToken}"/>
+
+            <div class="mb-3">
+              <label class="form-label">Ad Soyad</label>
+              <input class="form-control" name="full_name" required value="${isEdit ? member.full_name : ""}"/>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Telefon</label>
+                <input class="form-control" name="phone" value="${isEdit ? (member.phone||"") : ""}"/>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input class="form-control" name="email" value="${isEdit ? (member.email||"") : ""}"/>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Adres</label>
+              <textarea class="form-control" name="address" rows="3">${isEdit ? (member.address||"") : ""}</textarea>
+            </div>
+
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" name="is_active" ${!isEdit || member.is_active ? "checked" : ""}/>
+              <label class="form-check-label">Aktif</label>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Kaydet</button>
+              <a class="btn btn-outline-secondary" href="/admin/members">Iptal</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card app-card shadow-sm">
+        <div class="card-body">
+          <div class="fw-semibold mb-2">Not</div>
+          <div class="text-muted small">
+            Uye kaydi olusturduktan sonra finans ekranindan borc/odeme girebilirsin.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+` }) %>
